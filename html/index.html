@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <title>лаб 1</title>
+    <script src="../js/Validator.js"></script>
+    <script src="../js/Updater.js"></script>
+    <script src="../js/Cookies.js"></script>
+    <script src="../js/ClearTable.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="upper">
+            <header>
+                Махмудова Мария Александровна <br> P3224 <br> Вариант 290102
+            </header>
+            <div id="sidebar">
+                <h4>Полезные ссылки</h4>
+                <a href="https://github.com/Maria2525007"> Исходный код</a>
+            </div>
+
+        </div>
+
+        <div id="heading">
+            <h2>Лабораторная работа 1 </h2>
+        </div>
+
+
+        <div id="content">
+            <div id="graph">
+                <svg width="300px" height="300px">
+                    <!-- Координатные оси -->
+                    <line x1="0" x2="300" y1="150" y2="150" stroke="#343548"></line>
+                    <line x1="150" x2="150" y1="0" y2="300" stroke="#343548"></line>
+                    <!--Стрелки-->
+                    <polygon points="150,0 145,10 155,10" stroke="#343548"></polygon>
+                    <polygon points="300,150 290,145 290,155" stroke="#343548"></polygon>
+                    
+                    <!--Квадрат во второй четверти-->
+                    <polygon points="50,50 50,150 150,150 150,50"></polygon>
+                    
+                    <!--Четверть круга в первой четверти-->
+                    <path d="M150,100 A50,50 90 0,1 200,150 L 150,150 Z"></path>
+                    <!--Треугольник во второй четверти-->
+                    <polygon points="150,150 150,200 250,150"></polygon>
+
+                    <!-- Метки для значений R на оси X -->
+                    <line x1="50" x2="50" y1="145" y2="155" stroke="#343548"></line>
+                    <line x1="100" x2="100" y1="145" y2="155" stroke="#343548"></line>
+                    <line x1="200" x2="200" y1="145" y2="155" stroke="#343548"></line>
+                    <line x1="250" x2="250" y1="145" y2="155" stroke="#343548"></line>
+
+                    <!-- Метки для значений R на оси Y -->
+                    <line x1="145" x2="155" y1="50" y2="50" stroke="#343548"></line>
+                    <line x1="145" x2="155" y1="100" y2="100" stroke="#343548"></line>
+                    <line x1="145" x2="155" y1="200" y2="200" stroke="#343548"></line>
+                    <line x1="145" x2="155" y1="250" y2="250" stroke="#343548"></line>
+
+                    <!-- Подписи к осям -->
+                    <text x="290" y="140">X</text>
+                    <text x="155" y="10">Y</text>
+                    <!-- Значения R на оси X -->
+                    <text x="40" y="138">-R</text>
+                    <text x="85" y="138">-R/2</text>
+                    <text x="190" y="138">R/2</text>
+                    <text x="245" y="138">R</text>
+                    <!-- Значения R на оси Y -->
+                    <text x="162" y="54">R</text>
+                    <text x="162" y="104">R/2</text>
+                    <text x="162" y="204">-R/2</text>
+                    <text x="162" y="254">-R</text>
+                </svg>
+            </div>
+            <form novalidate name="simpleForm" onsubmit="update(); return false;">
+                <div id="form">
+                    <div id="values">
+
+                        <div id="x-values">
+                       <label for="fname" class="x-text">Выберите X:</label>
+                            <select id="x-values" name="select" class="x-value" name="x-value" size="1" required>
+                                <option selected value="s1">-3</option>
+                                <option value="s2">-2</option>
+                                <option value="s3">-1</option>
+                                <option value="s4">0</option>
+                                <option value="s5">1</option>
+                                <option value="s6">2</option>
+                                <option value="s7">3</option>
+                                <option value="s8">4</option>
+                                <option value="s9">5</option>
+                            </select> <br>     
+                        </div>
+
+                        <div id="y-values">
+                            <label for="y-value">Введите Y (-5 ... 3):</label>
+                            <input type="text" class="y-text" maxlength="14" id="y-value" name="y-value"
+                                oninput="validateTextField()" required>
+                        </div>
+
+                        <div id="r-values">
+                            <label for="fname" class="r-text">Выберите R:</label>
+                            <select id="r-values" name="select" class="r-value" size="1" required>
+                                <option selected value="s1">1</option>
+                                <option value="s2">1.5</option>
+                                <option value="s3">2</option>
+                                <option value="s4">2.5</option>
+                                <option value="s5">3</option>
+                            </select> <br>
+                        </div>
+
+                    </div>
+                    <input type="submit" class="element" name="submit-btn" value="Подтвердить">
+            </form>
+            <section id="validationInfo" class="validationInfo">
+            </section>
+        </div>
+    </div>
+
+
+
+    <div id="tableInTotal">
+        <input type="submit" class="element" id="clear-btn" value="Очистить"
+            onclick="clearTable(); changeButtonOnClick('clear-btn')">
+        <table id="table">
+            <tr>
+                <th>X</th>
+                <th>Y</th>
+                <th>R</th>
+                <th>Текущее время</th>
+                <th>Время работы скрипта</th>
+                <th>Результат</th>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    </div>
+    <footer>
+        <img src="../media/logo.png" height="80px">
+    </footer>
+</body>
