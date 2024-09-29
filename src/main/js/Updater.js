@@ -2,18 +2,18 @@ function update() {
     // Получаем значения из формы
     let xval = document.getElementById("x-values").value; 
     let yval = document.getElementById("y-values").value;  
-    let rvals = document.getElementById("r-values");
+    let rvals = document.getElementById("r-values").value;
 
     // Проверяем корректность ввода
-    let validInput = checkInput(xval, yval, rval);
+    let validInput = checkInput(xval, yval, rvals);
     
     if (validInput) {
         // Отправляем AJAX-запрос
         $.ajax({
             type: "POST",
-            url: 'http://localhost:8080/web_lab1.fr/html/', // Заменить на реальный URL
+            url: 'http://localhost:8080/webLab_1/src/main/java/App.java', // Заменить на реальный URL
             async: false,
-            data: { "x": xval, "y": yval, "r": rval },
+            data: { "x": xval, "y": yval, "r": rvals },
             success: function (data) {
                 updateTable(data);
             },
@@ -26,7 +26,7 @@ function update() {
             }
         });
 
-        console.log(xval, yval, rval);
+        console.log(xval, yval, rvals);
     }
 }
 
