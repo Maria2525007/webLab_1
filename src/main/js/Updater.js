@@ -1,23 +1,32 @@
 function update() {
-    // Получаем значения из формы
-    let xval = document.getElementById("x-values").value; 
-    let yval = document.getElementById("y-values").value;  
-    let rvals = document.getElementById("r-values").value;
+    // Получаем значения из формы и сразу обрезаем пробелы
+    let xval = parseFloat(document.getElementById("x-values").value.trim());
+    let yval = parseFloat(document.getElementById("y-values").value.trim());
+    let rval = parseFloat(document.getElementById("r-values").value.trim());
 
     // Проверяем корректность ввода
-    let validInput = checkInput(xval, yval, rvals);
-    
+    let validInput = checkInput(xval, yval, rval);
+       
+    console.log("Отправка данных:");
+    console.log("X:", xval);
+    console.log("Y:", yval);
+    console.log("R:", rval);
+
     if (validInput) {
         // Отправляем AJAX-запрос
         $.ajax({
             type: "POST",
             url: 'http://localhost:8080/webLab_1/src/main/java/App.java', // Заменить на реальный URL
             async: false,
-            data: { "x": xval, "y": yval, "r": rvals },
+            data: JSON.stringify({ "x": xval, "y": yval, "r": rval }),
+        
             success: function (data) {
+                console.log("Запрос успешно отправлен и получен ответ:");
+                console.log("Ответ сервера:", data);
                 updateTable(data);
             },
             error: function (xhr, textStatus, err) {
+                console.log("Ошибка при отправке запроса:");
                 alert("readyState: " + xhr.readyState + "\n"+
                       "responseText: " + xhr.responseText + "\n"+
                       "status: " + xhr.status + "\n"+
@@ -25,29 +34,7 @@ function update() {
                       "error: " + err);
             }
         });
-
-        console.log(xval, yval, rvals);
     }
-}
-
-function checkInput(x, y, r) {
-    // Преобразуем значения X, Y, R в числа
-    x = parseFloat(x);
-    y = parseFloat(y);
-    r = parseFloat(r);
-   // Пример простой валидации
-   if (isNaN(x) || isNaN(y) || isNaN(r)) {
-       alert("Ошибка: Все значения должны быть числами.");
-       return false;
-   }
-
-   // Проверка диапазона для Y
-   if (y < -5 || y > 3) {
-       alert("Ошибка: Y должен быть в диапазоне от -5 до 3.");
-       return false;
-   }
-
-   return true; 
 }
 
 function updateTable(data) {
@@ -58,5 +45,5 @@ function updateTable(data) {
     storage.setItem('tableData', (currentData ? currentData : '') + data);
 
     // Обновляем таблицу на странице
-    $('#table tr:last').after(data);
+    $('#table tbody').append(data);
 }

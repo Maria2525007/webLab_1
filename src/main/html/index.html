@@ -5,10 +5,10 @@
     <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <title>лаб 1</title>
-    <script src="../js/Validator.js"></script>
-    <script src="../js/Updater.js"></script>
-    <script src="../js/Cookies.js"></script>
-    <script src="../js/ClearTable.js"></script>
+    <script src="../js/Validator.js" defer></script>
+    <script src="../js/Updater.js" defer></script>
+    <script src="../js/Cookies.js" defer></script>
+    <script src="../js/ClearTable.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -75,44 +75,45 @@
                     <text x="162" y="254">-R</text>
                 </svg>
             </div>
-            <form novalidate name="simpleForm" onsubmit="update(); return false;">
+            <form novalidate name="simpleForm">
                 <div id="form">
                     <div id="values">
-
                         <div id="x-values">
-                       <label for="fname" class="x-text">Выберите X:</label>
-                            <select id="x-values" name="select" class="x-value" name="x-value" size="1" required>
-                                <option selected value="s1">-3</option>
-                                <option value="s2">-2</option>
-                                <option value="s3">-1</option>
-                                <option value="s4">0</option>
-                                <option value="s5">1</option>
-                                <option value="s6">2</option>
-                                <option value="s7">3</option>
-                                <option value="s8">4</option>
-                                <option value="s9">5</option>
-                            </select> <br>     
+                       <label for="x-values" class="x-text">Выберите X:</label>
+                        <select id="x-values" name="select" class="x-value" name="x-value" size="1" required>
+                            <option selected value="-3">-3</option>
+                            <option value="-2">-2</option>
+                            <option value="-1">-1</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                     <br>     
                         </div>
 
                         <div id="y-values">
-                            <label for="y-value">Введите Y (-5 ... 3):</label>
-                            <input type="text" class="y-text" maxlength="14" id="y-value" name="y-value"
-                                oninput="validateTextField()" required>
+                            <label for="y-values">Введите Y (-5 ... 3):</label>
+                            <input type="text" class="y-text" maxlength="14" id="y-value" name="y-value" required>
                         </div>
 
                         <div id="r-values">
                             <label for="fname" class="r-text">Выберите R:</label>
                             <select id="r-values" name="select" class="r-value" size="1" required>
-                                <option selected value="s1">1</option>
-                                <option value="s2">1.5</option>
-                                <option value="s3">2</option>
-                                <option value="s4">2.5</option>
-                                <option value="s5">3</option>
+                                <option selected value="1">1</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2</option>
+                                <option value="2.5">2.5</option>
+                                <option value="3">3</option>
                             </select> <br>
                         </div>
 
                     </div>
-                    <input type="submit" class="element" name="submit-btn" value="Подтвердить">
+                    
+                    <input type="submit" class="element" name="submit-btn" value="Подтвердить"
+                    onclick="update()">
             </form>
             <section id="validationInfo" class="validationInfo">
             </section>
@@ -123,24 +124,23 @@
 
     <div id="tableInTotal">
         <input type="submit" class="element" id="clear-btn" value="Очистить"
-            onclick="clearTable(); changeButtonOnClick('clear-btn')">
+            onclick="clearTable()">
         <table id="table">
-            <tr>
-                <th>X</th>
-                <th>Y</th>
-                <th>R</th>
-                <th>Текущее время</th>
-                <th>Время работы скрипта</th>
-                <th>Результат</th>
-            </tr>
-
+            <thead>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>R</th>
+                    <th>Текущее время</th>
+                    <th>Время работы скрипта</th>
+                    <th>Результат</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
-
     </div>
 
-
-    </div>
     <footer>
-        <img src="../media/logo.png" height="80px">
+        <img src="../media/logo.png" height="80px" alt="logo">
     </footer>
 </body>

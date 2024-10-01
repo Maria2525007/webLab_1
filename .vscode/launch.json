@@ -1,27 +1,20 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
             "type": "java",
-            "name": "Current File",
+            "name": "Запуск Java сервера",
             "request": "launch",
-            "mainClass": "${file}"
-        },
+            "mainClass": "App", // Убедитесь, что это основной класс вашего приложения
+            "projectName": "webLab_1_21ebc9ac",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ],
+    "compounds": [
         {
-            "type": "java",
-            "name": "App",
-            "request": "launch",
-            "mainClass": "App",
-            "projectName": "webLab_1",
-            "classPaths": [
-                "src/main/resources/lib/fastcgi-lib.jar",  // Добавляем путь к jar-файлу
-                "src/main/java" //Путь к исходным файлам
-            ]
-
+            "name": "Запуск фронтенда и сервера",
+            "configurations": ["Запуск Java сервера"]
         }
     ]
 }

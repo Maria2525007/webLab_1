@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Запуск фронтенда",
+            "type": "shell",
+            "command": "C:\\Apache24\\bin\\httpd.exe -k start",
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Запускает локальный сервер Apache на порту 8080"
+        },
+        {
+            "label": "Запуск Java сервера",
+            "type": "shell",
+            "command": "gradle bootRun",
+            "group": "build",
+            "dependsOn": "Запуск фронтенда", // Зависимость от запуска фронтенда
+            "problemMatcher": [],
+            "detail": "Запускает сервер Java"
+        }
+    ]
+}
