@@ -1,20 +1,21 @@
 {
-    "version": "0.2.0",
+    "type": "java",
+    "name": "WebApp Start",
+    "request": "launch",
+    "mainClass": "App", // Или укажите пакет, например, org.example.App
+    "projectName": "webLab_1",
+    "cwd": "${workspaceFolder}",
+    "console": "integratedTerminal",
+    "classPaths": [
+        "${workspaceFolder}/build/classes/java/main"
+    ],
     "configurations": [
         {
             "type": "java",
-            "name": "Запуск Java сервера",
+            "name": "App",
             "request": "launch",
-            "mainClass": "App", // Убедитесь, что это основной класс вашего приложения
-            "projectName": "webLab_1_21ebc9ac",
-            "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal"
-        }
-    ],
-    "compounds": [
-        {
-            "name": "Запуск фронтенда и сервера",
-            "configurations": ["Запуск Java сервера"]
+            "mainClass": "App",
+            "projectName": "webLab_1"
         }
     ]
 }

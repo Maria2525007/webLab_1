@@ -1,59 +1,43 @@
-import java.io.InputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import com.fastcgi.FCGIInterface;
 
 public class App {
-    private static final String RESPONSE_TEMPLATE = "Content-Type: application/json\n" +
-                                                    "Content-Length: %d\n\n%s";
-
     private static final Logger log = Logger.getLogger(App.class.getName());
+    private static final String RESPONSE_TEMPLATE = "Content-Type: application/json\nContent-Length: %d\n\n%s";
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
+        FCGIInterface fcgi = new FCGIInterface();
         log.info("Сервер запущен.");
-        while (new FCGIInterface().FCGIaccept() >= 0) {
+
+        while (fcgi.FCGIaccept() >= 0) {
             log.info("Запрос получен.");
-            long startTime = System.currentTimeMillis(); // Время начала запроса
+            long startTime = System.currentTimeMillis();
 
             try {
-                String contentLengthStr = FCGIInterface.request.params.getProperty("CONTENT_LENGTH");
-                int contentLength = (contentLengthStr != null) ? Integer.parseInt(contentLengthStr) : 0;
+                String body = readRequestBody();
+                log.info("Тело запроса: " + body);
 
-                if (contentLength > 0) {
-                    byte[] buffer = new byte[contentLength];
-                    InputStream in = System.in;
-                    int bytesRead = in.read(buffer, 0, contentLength);
+                HashMap<String, String> params = parseJsonBody(body);
 
-                    if (bytesRead == -1) {
-                        log.warning("POST-запрос не содержит данных.");
-                        sendJson(startTime, "{\"error\": \"Данные не получены\"}");
-                        continue;
-                    }
+                if (!params.containsKey("x") || !params.containsKey("y") || !params.containsKey("r")) {
+                    sendJson(startTime, "{\"error\": \"Недостаточно параметров\"}");
+                    continue;
+                }
 
-                    String requestBody = new String(buffer, StandardCharsets.UTF_8);
-                    log.info("Тело запроса: " + requestBody);
+                float x = Float.parseFloat(params.get("x"));
+                float y = Float.parseFloat(params.get("y"));
+                float r = Float.parseFloat(params.get("r"));
 
-                    // Парсинг тела запроса (предполагается, что это JSON)
-                    HashMap<String, String> params = parseJsonBody(requestBody);
-
-                    // Извлечение x, y и r из параметров
-                    float x = Float.parseFloat(params.get("x"));
-                    float y = Float.parseFloat(params.get("y"));
-                    float r = Float.parseFloat(params.get("r"));
-
-                    // Валидация данных
-                    if (validateX(x) && validateY(y) && validateR(r)) {
-                        boolean hit = GeometryChecker.hit(x, y, r);
-                        String responseJson = String.format("{\"hit\": %b}", hit);
-                        sendJson(startTime, responseJson);
-                    } else {
-                        sendJson(startTime, "{\"error\": \"Некорректные данные\"}");
-                    }
+                // Валидация данных
+                if (validateX(x) && validateY(y) && validateR(r)) {
+                    boolean hit = GeometryChecker.hit(x, y, r);
+                    sendJson(startTime, String.format("{\"hit\": %b}", hit));
                 } else {
-                    sendJson(startTime, "{\"error\": \"Данные не получены\"}");
+                    sendJson(startTime, "{\"error\": \"Некорректные данные\"}");
                 }
             } catch (Exception e) {
                 log.severe("Ошибка: " + e.toString());
@@ -62,7 +46,14 @@ public class App {
         }
     }
 
-    // Метод для парсинга JSON
+    private static String readRequestBody() throws IOException {
+        FCGIInterface.request.inStream.fill(); // Заполнение входного потока
+        int contentLength = FCGIInterface.request.inStream.available(); // Доступная длина
+        var buffer = ByteBuffer.allocate(contentLength); // Создание буфера
+        var readBytes = FCGIInterface.request.inStream.read(buffer.array(), 0, contentLength); // Чтение данных
+        return new String(buffer.array(), 0, readBytes, StandardCharsets.UTF_8); // Возврат строки
+    }
+
     private static HashMap<String, String> parseJsonBody(String body) {
         HashMap<String, String> params = new HashMap<>();
         body = body.replace("{", "").replace("}", "").replace("\"", "");
@@ -76,19 +67,14 @@ public class App {
         return params;
     }
 
-    // Метод отправки ответа в формате JSON
     private static void sendJson(long startTime, String jsonDump) {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - startTime;
-        String currentTimeStr = new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(currentTime));
-
-        String responseJson = String.format("{\"response\": %s, \"currentTime\": \"%s\", \"elapsedTime\": %d}",
-                                             jsonDump, currentTimeStr, elapsedTime);
-
-        System.out.println(String.format(RESPONSE_TEMPLATE, responseJson.getBytes(StandardCharsets.UTF_8).length, responseJson));
+        String responseJson = String.format("{\"response\": %s, \"elapsedTime\": %d}",
+                                             jsonDump, elapsedTime);
+        System.out.printf(RESPONSE_TEMPLATE + "%n", responseJson.getBytes(StandardCharsets.UTF_8).length, responseJson);
     }
 
-    // Методы валидации данных
     private static boolean validateX(float x) {
         return x >= -5 && x <= 3;
     }

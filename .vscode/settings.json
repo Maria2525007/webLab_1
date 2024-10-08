@@ -4,8 +4,7 @@
     },
     
     "java.project.referencedLibraries": [
-            "lib/*.jar"
-        ],
+            "lib/*.jar"        ],
     
     "java.completion.favoriteStaticMembers": [
         
@@ -26,5 +25,6 @@
     "[java]": {
 
         "editor.suggest.snippetsPreventQuickSuggestions": false
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "disabled"
 }
