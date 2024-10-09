@@ -3,6 +3,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
 import com.fastcgi.FCGIInterface;
 
 public class App {
@@ -16,10 +17,16 @@ public class App {
         while (fcgi.FCGIaccept() >= 0) {
             log.info("Запрос получен.");
             long startTime = System.currentTimeMillis();
-
-            try {
-                String body = readRequestBody();
-                log.info("Тело запроса: " + body);
+                try {
+                    String body = readRequestBody();
+                    log.info(body);
+                    
+                    // Проверка на null перед обращением к полю request
+                    if (FCGIInterface.request == null || FCGIInterface.request.inStream == null) {
+                        log.severe("Ошибка: request или inStream не инициализирован.");
+                        sendJson(startTime, "{\"error\": \"FCGI request или inStream не инициализирован.\"}");
+                        continue;
+                    }
 
                 HashMap<String, String> params = parseJsonBody(body);
 
@@ -39,8 +46,8 @@ public class App {
                 } else {
                     sendJson(startTime, "{\"error\": \"Некорректные данные\"}");
                 }
-            } catch (Exception e) {
-                log.severe("Ошибка: " + e.toString());
+            } catch (IOException | NumberFormatException e) {
+                log.severe(e.toString());
                 sendJson(startTime, String.format("{\"error\": \"%s\"}", e.toString()));
             }
         }

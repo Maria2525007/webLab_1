@@ -1,4 +1,7 @@
+
 {
+
+
     "workbench.editorAssociations": {
         "*.jar": "default"
     },
@@ -7,10 +10,7 @@
             "lib/*.jar"        ],
     
     "java.completion.favoriteStaticMembers": [
-        
-
-
-
+     
 
         "org.junit.Assert.*",
         "org.junit.Assume.*",
@@ -22,9 +22,20 @@
         "org.mockito.ArgumentMatchers.*",
         "org.mockito.Answers.*"
     ],
+
     "[java]": {
 
         "editor.suggest.snippetsPreventQuickSuggestions": false
     },
-    "java.configuration.updateBuildConfiguration": "disabled"
+
+    "java.configuration.updateBuildConfiguration": "disabled",
+
+    "java.home": "C:/Program Files/Java/",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "C:/Program Files/Java/"
+        }
+    ],
+    "git.ignoreLimitWarning": true
 }

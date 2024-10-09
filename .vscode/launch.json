@@ -1,21 +1,15 @@
 {
-    "type": "java",
-    "name": "WebApp Start",
-    "request": "launch",
-    "mainClass": "App", // Или укажите пакет, например, org.example.App
-    "projectName": "webLab_1",
-    "cwd": "${workspaceFolder}",
-    "console": "integratedTerminal",
-    "classPaths": [
-        "${workspaceFolder}/build/classes/java/main"
-    ],
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "App",
+            "type": "chrome",
             "request": "launch",
-            "mainClass": "App",
-            "projectName": "webLab_1"
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }

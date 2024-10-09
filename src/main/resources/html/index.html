@@ -5,10 +5,6 @@
     <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <title>лаб 1</title>
-    <script src="../js/Validator.js" defer></script>
-    <script src="../js/Updater.js" defer></script>
-    <script src="../js/Cookies.js" defer></script>
-    <script src="../js/ClearTable.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -78,8 +74,8 @@
             <form novalidate name="simpleForm">
                 <div id="form">
                     <div id="values">
-                        <div id="x-values">
-                       <label for="x-values" class="x-text">Выберите X:</label>
+                        <div id="x-value">
+                        <label for="x-value" class="x-text">Выберите X:</label>
                         <select id="x-values" name="select" class="x-value" name="x-value" size="1" required>
                             <option selected value="-3">-3</option>
                             <option value="-2">-2</option>
@@ -93,14 +89,12 @@
                         </select>
                      <br>     
                         </div>
-
-                        <div id="y-values">
-                            <label for="y-values">Введите Y (-5 ... 3):</label>
-                            <input type="text" class="y-text" maxlength="14" id="y-value" name="y-value" required>
+                        <div id="y-value">
+                            <label for="y-value">Введите Y (-5 ... 3):</label>
+                            <input type="text" class="y-text" maxlength="14" name="y-value" id="y-values" required>
                         </div>
-
-                        <div id="r-values">
-                            <label for="fname" class="r-text">Выберите R:</label>
+                        <div id="r-value">
+                            <label for="r-value" class="r-text">Выберите R:</label>
                             <select id="r-values" name="select" class="r-value" size="1" required>
                                 <option selected value="1">1</option>
                                 <option value="1.5">1.5</option>
@@ -144,3 +138,8 @@
         <img src="../media/logo.png" height="80px" alt="logo">
     </footer>
 </body>
+<script src="../js/Validator.js" defer></script>
+<script src="../js/Updater.js" defer></script>
+<script src="../js/Cookies.js" defer></script>
+<script src="../js/ClearTable.js" defer></script>
+</html>

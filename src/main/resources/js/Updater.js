@@ -4,13 +4,14 @@ function update() {
     let yval = parseFloat(document.getElementById("y-values").value.trim());
     let rval = parseFloat(document.getElementById("r-values").value.trim());
 
-    // Проверяем корректность ввода
     let validInput = checkInput(xval, yval, rval);
-       
+
+    // Проверяем корректность ввода
     console.log("Отправка данных:");
     console.log("X:", xval);
     console.log("Y:", yval);
     console.log("R:", rval);
+    console.log("Валидные данные:", validInput);
 
     if (validInput) {
         // Отправляем AJAX-запрос
