@@ -13,7 +13,7 @@ function update() {
     console.log("R:", rval);
     console.log("Валидные данные:", validInput);
 
-    if (validInput) {
+    if (!validInput) {
         // Отправляем AJAX-запрос
         $.ajax({
             type: "POST",

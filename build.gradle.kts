@@ -26,6 +26,11 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+
 tasks.shadowJar {
     archiveBaseName.set("server")
     archiveClassifier.set("")

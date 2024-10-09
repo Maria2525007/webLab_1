@@ -1,7 +1,11 @@
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 import com.fastcgi.FCGIInterface;
@@ -11,6 +15,18 @@ public class App {
     private static final String RESPONSE_TEMPLATE = "Content-Type: application/json\nContent-Length: %d\n\n%s";
 
     public static void main(String[] args) {
+        System.setProperty("file.encoding", "UTF-8");
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+
+        // Настройка логгера с обработкой исключения
+        try {
+            Handler consoleHandler = new ConsoleHandler();
+            consoleHandler.setEncoding("UTF-8"); // Обработка UnsupportedEncodingException
+            log.addHandler(consoleHandler);
+        } catch (UnsupportedEncodingException e) {
+            log.severe("Ошибка установки кодировки UTF-8 для ConsoleHandler: " + e.getMessage());
+
+        }
         FCGIInterface fcgi = new FCGIInterface();
         log.info("Сервер запущен.");
 
@@ -20,6 +36,7 @@ public class App {
                 try {
                     String body = readRequestBody();
                     log.info(body);
+                    HashMap<String, String> params = parseJsonBody(body);
                     
                     // Проверка на null перед обращением к полю request
                     if (FCGIInterface.request == null || FCGIInterface.request.inStream == null) {
@@ -27,8 +44,6 @@ public class App {
                         sendJson(startTime, "{\"error\": \"FCGI request или inStream не инициализирован.\"}");
                         continue;
                     }
-
-                HashMap<String, String> params = parseJsonBody(body);
 
                 if (!params.containsKey("x") || !params.containsKey("y") || !params.containsKey("r")) {
                     sendJson(startTime, "{\"error\": \"Недостаточно параметров\"}");
@@ -54,11 +69,18 @@ public class App {
     }
 
     private static String readRequestBody() throws IOException {
-        FCGIInterface.request.inStream.fill(); // Заполнение входного потока
-        int contentLength = FCGIInterface.request.inStream.available(); // Доступная длина
-        var buffer = ByteBuffer.allocate(contentLength); // Создание буфера
-        var readBytes = FCGIInterface.request.inStream.read(buffer.array(), 0, contentLength); // Чтение данных
-        return new String(buffer.array(), 0, readBytes, StandardCharsets.UTF_8); // Возврат строки
+        try {
+            FCGIInterface.request.inStream.fill(); // Заполнение входного потока
+            int contentLength = FCGIInterface.request.inStream.available(); // Доступная длина
+            var buffer = ByteBuffer.allocate(contentLength); // Создание буфера
+            var readBytes = FCGIInterface.request.inStream.read(buffer.array(), 0, contentLength); // Чтение данных
+            var requestBodyRaw = new byte[readBytes];
+            buffer.get(requestBodyRaw);
+            buffer.clear();
+            return new String(buffer.array(), 0, readBytes, StandardCharsets.UTF_8); // Возврат строки
+    } catch (NullPointerException e) {
+            return "{\"error\": \"FCGI request или inStream не инициализирован.\"}";
+        }
     }
 
     private static HashMap<String, String> parseJsonBody(String body) {
