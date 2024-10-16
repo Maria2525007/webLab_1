@@ -14,43 +14,37 @@ function update() {
     console.log("Валидные данные:", validInput);
 
     if (validInput) {
-        // Отправляем fetch-запрос
-        fetch('/s290102/httpd-root/fcgi-bin/server.jar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+        // Отправляем AJAX-запрос
+        $.ajax({
+            type: "POST",
+            url: '/fcgi-bin/server.jar', // Заменить на реальный URL
+            async: false,
+            data: JSON.stringify({ "x": xval, "y": yval, "r": rval }),
+
+            success: function (data) {
+                console.log("Запрос успешно отправлен и получен ответ:");
+                console.log("Ответ сервера:", data);
+                updateTable(data);
             },
-            body: JSON.stringify({ x: xval, y: yval, r: rval })
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log("Запрос успешно отправлен и получен ответ:");
-            console.log("Ответ сервера:", result);
-            updateTable(result);
-        })
-        .catch(error => {
-            console.log("Ошибка при отправке запроса:");
-            alert("Ошибка: " + error);
+            error: function (xhr, textStatus, err) {
+                console.log("Ошибка при отправке запроса:");
+                alert("readyState: " + xhr.readyState + "\n"+
+                      "responseText: " + xhr.responseText + "\n"+
+                      "status: " + xhr.status + "\n"+
+                      "text status: " + textStatus + "\n" +
+                      "error: " + err);
+            }
         });
     }
 }
 
-function updateTable(result) {
+function updateTable(data) {
     let storage = window.localStorage;
-    
+
     // Добавляем новые данные в localStorage
-    let points = JSON.parse(storage.getItem('points')) || [];
-    points.push(result);
-    storage.setItem('points', JSON.stringify(points));
+    let currentData = storage.getItem('tableData');
+    storage.setItem('tableData', (currentData ? currentData : '') + data);
 
     // Обновляем таблицу на странице
-    let newRow = `<tr>
-                    <td>${result.x}</td>
-                    <td>${result.y}</td>
-                    <td>${result.r}</td>
-                    <td>${new Date().toLocaleString()}</td>
-                    <td>${result.executionTime} ms</td>
-                    <td>${result.hit ? 'Попадание' : 'Промах'}</td>
-                  </tr>`;
-    $('#table tbody').append(newRow);
+    $('#table tbody').append(data);
 }

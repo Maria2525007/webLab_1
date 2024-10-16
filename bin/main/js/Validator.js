@@ -1,26 +1,48 @@
-function checkInput(xval, yval, rval) {
+function checkInput(x, y, r) {
+    const hiddenSpan = document.querySelectorAll(".wrong");
+    console.log(hiddenSpan);
+    let isValid = true;
 
-    // Простая валидация данных
-    if (isNaN(xval) || isNaN(yval) || isNaN(rval)) {
-        console.log("Ошибка: Все значения должны быть числами.");
-        alert("Все значения должны быть числами.");
-        return false;
+    // Убираем предыдущие сообщения
+    hiddenSpan.forEach(element => {
+        element.classList.remove("show");
+        element.classList.add("hidden");
+    });
+
+     // Проверка X: проверяем, что значение является числом в заданном диапазоне
+     if (isNaN(x) || x > 5 || x < -3) {
+        const wrongX = document.getElementById('wrongX')
+        wrongX.classList.remove("hidden");
+        wrongX.classList.add("show");
+        console.log(wrongX.classList);
+        isValid = false;
     }
-    if (xval < -5 || xval > 3) {
-        console.log("Ошибка: Значение X должно быть в диапазоне от -5 до 3.");
-        alert("Значение X должно быть в диапазоне от -5 до 3.");
-        return false;
+
+    // Проверка Y: проверяем, что значение является числом и находится в диапазоне [-5, 3]
+    if (isNaN(y) || y <= -5 || y >= 3) {
+        const wrongY = document.getElementById("wrongY");
+        wrongY.classList.remove("hidden");
+        wrongY.classList.add("show");
+        console.log(wrongY);
+        isValid = false;
     }
-    if (yval < -5 || yval > 3) {
-        console.log("Ошибка: Значение Y должно быть в диапазоне от -5 до 3.");
-        alert("Значение Y должно быть в диапазоне от -5 до 3.");
-        return false;
+
+    // Проверка R: проверяем, что значение является числом в заданном диапазоне [1, 3]
+    if (isNaN(r) || r < 1 || r > 3) {
+        const wrongR = document.getElementById("wrongR");
+        console.log(wrongR.classList);
+        wrongR.classList.remove("hidden");
+        wrongR.classList.add("show");
+        isValid = false;
     }
-    if (rval < 1 || rval > 3 || rval % 0.5 !== 0) {
-        console.log("Ошибка: Значение R должно быть в диапазоне от 1 до 3 и быть кратным 0.5.");
-        alert("Значение R должно быть в диапазоне от 1 до 3 и быть кратным 0.5.");
-        return false;
-    }
-    console.log("Данные валидны.");
-    return true;
+
+    return isValid;
+}
+function validate(){
+    let xval = parseFloat(document.getElementById("x-values").value.trim());
+    let yval = parseFloat(document.getElementById("y-values").value.trim());
+    let rval = parseFloat(document.getElementById("r-values").value.trim());
+
+    let validInput = checkInput(xval, yval, rval);
+    return validInput;
 }

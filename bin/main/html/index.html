@@ -5,6 +5,7 @@
     <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <title>лаб 1</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
 </head>
 
 <body>
@@ -34,10 +35,10 @@
                     <!--Стрелки-->
                     <polygon points="150,0 145,10 155,10" stroke="#343548"></polygon>
                     <polygon points="300,150 290,145 290,155" stroke="#343548"></polygon>
-                    
+
                     <!--Квадрат во второй четверти-->
                     <polygon points="50,50 50,150 150,150 150,50"></polygon>
-                    
+
                     <!--Четверть круга в первой четверти-->
                     <path d="M150,100 A50,50 90 0,1 200,150 L 150,150 Z"></path>
                     <!--Треугольник во второй четверти-->
@@ -70,13 +71,13 @@
                     <text x="162" y="254">-R</text>
                 </svg>
             </div>
-            <form novalidate name="simpleForm">
-                <div id="form">
-                    <div id="values">
-                        <div id="x-value">
-                        <label for="x-value" class="x-text">Выберите X:</label>
-                        <select id="x-values" name="select" class="x-value" name="x-value" size="1" required>
-                            <option selected value="-3">-3</option>
+
+                <form name="simpleForm" id="pointForm" method="post" onsubmit="return validate();">
+
+                    <div class="input-value">
+                        <label for="x">Выберите X:</label>
+                        <select id="x-values" name="x">
+                            <option value="-3">-3</option>
                             <option value="-2">-2</option>
                             <option value="-1">-1</option>
                             <option value="0">0</option>
@@ -85,17 +86,18 @@
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
-                        </select>
-                     <br>     
+                        </select> <br>
+                    </div>
+
+                        <div class="input-value">
+                            <label for="y">Введите Y (-5 ... 3):</label>
+                            <input type="text" maxlength="14" name="y" id="y-values" required>
                         </div>
-                        <div id="y-value">
-                            <label for="y-value">Введите Y (-5 ... 3):</label>
-                            <input type="text" class="y-text" maxlength="14" name="y-value" id="y-values" required>
-                        </div>
-                        <div id="r-value">
-                            <label for="r-value" class="r-text">Выберите R:</label>
-                            <select id="r-values" name="select" class="r-value" size="1" required>
-                                <option selected value="1">1</option>
+
+                        <div class="input-value">
+                            <label for="r">Выберите R:</label>
+                            <select id="r-values" name="r">
+                                <option value="1">1</option>
                                 <option value="1.5">1.5</option>
                                 <option value="2">2</option>
                                 <option value="2.5">2.5</option>
@@ -103,21 +105,23 @@
                             </select> <br>
                         </div>
 
-                    </div>
-                    
-                    <input type="submit" class="element" name="submit-btn" value="Подтвердить"
-                    onclick="update()">
+                    <button type="submit" onclick="update()">Обновить</button>
+
             </form>
-            <section id="validationInfo" class="validationInfo">
-            </section>
+
+                <div id="validationInfo" class="validationInfo">
+                    <span class="hidden wrong" id="wrongX">X должен быть числом в диапазоне [-3..5]!</span><br>
+                    <span class="hidden wrong" id="wrongY">Y должен быть числом в диапазоне (-5..3)!</span><br>
+                    <span class="hidden wrong" id="wrongR">R должен быть числом в диапазоне [1..3]!</span><br>
+                </div>
         </div>
     </div>
 
 
 
     <div id="tableInTotal">
-        <input type="submit" class="element" id="clear-btn" value="Очистить" 
-        onclick="clearTable()">
+        <button type="submit" class="element" id="clear-btn"
+        onclick="clearTable()">Очистить </button>
         <table id="table">
             <thead>
                 <tr>
@@ -137,8 +141,7 @@
         <img src="../media/logo.png" height="80px" alt="logo">
     </footer>
 </body>
-<script src="../js/Validator.js" defer></script>
-<script src="../js/Updater.js" defer></script>
-<script src="../js/Cookies.js" defer></script>
-<script src="../js/ClearTable.js" defer></script>
+    <script src="Validator.js" defer></script>
+    <script src="Updater.js" defer></script>
+    <script src="ClearTable.js" defer></script>
 </html>
