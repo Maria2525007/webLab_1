@@ -1,5 +1,5 @@
 function checkInput(x, y, r) {
-    const hiddenSpan = document.querySelectorAll(".wrong");
+    const hiddenSpan = document.querySelectorAll(".hidden");
     console.log(hiddenSpan);
     let isValid = true;
 
