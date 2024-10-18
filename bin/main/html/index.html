@@ -106,7 +106,8 @@
                         </div>
 
                     <button type="submit" onclick="update()">Подтвердить</button>
-
+                    <button type="submit" class="element" id="clear-btn"
+                    onclick="clearTable()">Очистить </button>
             </form>
 
                 <div id="validationInfo" class="validationInfo">
@@ -120,17 +121,15 @@
 
 
     <div id="tableInTotal">
-        <button type="submit" class="element" id="clear-btn"
-        onclick="clearTable()">Очистить </button>
         <table id="table">
             <thead>
                 <tr>
                     <th>X</th>
                     <th>Y</th>
                     <th>R</th>
+                    <th>Результат</th>
                     <th>Текущее время</th>
                     <th>Время работы скрипта</th>
-                    <th>Результат</th>
                 </tr>
             </thead>
             <tbody></tbody>

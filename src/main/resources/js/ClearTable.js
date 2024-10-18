@@ -12,8 +12,8 @@ function clearTable() {
     `);
 
     // Удаление сохраненных данных из localStorage
-    if (window.localStorage.getItem('tableData')) {
-        window.localStorage.removeItem('tableData');
+    if (window.sessionStorage.getItem('tableData')) {
+        window.sessionStorage.removeItem('tableData');
         console.log("Таблица и данные успешно очищены.");
     } else {
         console.log("Нет данных для очистки.");
